@@ -1,0 +1,40 @@
+function onChange(control, oldValue, newValue, isLoading) {
+    if (!isLoading) {
+        if (newValue != '') {
+            //current date
+            //Existe a funcao g_user_date_time_format e g_user_date_format
+
+            var currentDateObj = new Date(); //Formato Sun 20 Feb 2022 23:09:01
+            var currentDateStr = formatDate(currentDateObj, g_user_date_time_format);
+            var currentDateNum = getDateFromFormat(currentDateStr, g_user_date_time_format);
+
+            //get start date
+            var startDateStr = g_form.getValue('data_da_entrada');
+            var startDateNum = getDateFromFormat(startDateStr, g_user_date_time_format);
+
+            //get end date
+            var endDateStr = g_form.getValue('data_da_saida');
+            var endDateNum = getDateFromFormat(endDateStr, g_user_date_time_format);
+
+            if (endDateNum <= currentDateNum) {
+                //alert('Por gentileza, coloque a data no futuro !.'); //PopUp
+                //g_form.showErrorBox('right','Você não pode colocar a data no passado !'); //Caixa de Dialog
+                g_form.clearValue('data_da_saida');
+
+                //Apresenta Abaixo do Campo no Formulário
+                g_form.showFieldMsg('data_da_saida', 'Por gentileza, coloque a data no futuro !.', 'error');
+                g_form.setValue('data_da_saida', '');
+            }
+
+            if (endDateNum <= startDateNum) {
+                //alert('Por gentileza, coloque a data no futuro !.'); //PopUp
+                //g_form.showErrorBox('right','Você não pode colocar a data no passado !'); //Caixa de Dialog
+                g_form.clearValue('data_da_saida');
+
+                //Apresenta Abaixo do Campo no Formulário
+                g_form.showFieldMsg('data_da_saida', 'Por gentileza, a data de saída deve ser maior que a data de entrada !.', 'error');
+                g_form.setValue('data_da_saida', '');
+            }
+        }
+    }
+}
